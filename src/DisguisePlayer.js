@@ -30,6 +30,48 @@ const DisguisePlayer = ({ player, onDisguise }) => {
       } else if (disguiseType === 'fullColor') {
         ctx.fillStyle = 'rgba(0, 0, 255, 0.5)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
+      } else if (disguiseType === 'gaussianblur') {
+        const width = canvas.width;
+        const height = canvas.height;
+        const imageData = ctx.getImageData(0, 0, width, height);
+        const data = imageData.data;
+        const kernel = [
+          [1, 4, 7, 4, 1],
+          [4, 16, 26, 16, 4],
+          [7, 26, 41, 26, 7],
+          [4, 16, 26, 16, 4],
+          [1, 4, 7, 4, 1]
+        ];
+        const kernelSize = 5;
+        const kernelSum = 273;
+
+        const applyKernel = (x, y) => {
+        let r = 0, g = 0, b = 0;
+        for (let ky = 0; ky < kernelSize; ky++) {
+          for (let kx = 0; kx < kernelSize; kx++) {
+            const px = (x + kx - 2) * 4;
+            const py = (y + ky - 2) * width * 4;
+            const weight = kernel[ky][kx];
+            r += data[px + py] * weight;
+            g += data[px + py + 1] * weight;
+            b += data[px + py + 2] * weight;
+          }
+        }
+        return [r / kernelSum, g / kernelSum, b / kernelSum];
+        };
+
+        for (let y = 2; y < height - 2; y++) {
+          for (let x = 2; x < width - 2; x++) {
+            const [r, g, b] = applyKernel(x, y);
+            const index = (x + y * width) * 4;
+            data[index] = r;
+            data[index + 1] = g;
+            data[index + 2] = b;
+          }
+        }
+
+
+        ctx.putImageData(imageData, 0, 0);
       }
     };
   };
@@ -55,6 +97,15 @@ const DisguisePlayer = ({ player, onDisguise }) => {
             onChange={handleDisguiseChange}
           />
           Blur Face
+        </label>
+        <label>
+          <input
+            type="radio"
+            value="gaussianblur"
+            checked={disguiseType === 'gaussianblur'}
+            onChange={handleDisguiseChange}
+          />
+          Gaussian Blur Face
         </label>
         <label>
           <input

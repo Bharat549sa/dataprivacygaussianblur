@@ -1,7 +1,9 @@
 import Pacman from "react-pacman";
 import { useEffect, useState } from "react";
 import "./styles.css";
-import PlayerSelector from './PlayerSelector'; import DisguisePlayer from './DisguisePlayer';
+import PlayerSelector from './PlayerSelector';
+import DisguisePlayer from './DisguisePlayer';
+
 export default function App() {
 /*   const [gameKey, setGameKey] = useState(0); // Unique key to remount the Pacman component
   const [isGameOver, setIsGameOver] = useState(false); // State to track if the game is over
@@ -26,12 +28,10 @@ export default function App() {
           setCurrentPlayer(selectedPlayers[0]);
            setShowDisguisePlayer(true);
         };
-        const handleDisguise = (disguisedImage) => { console.log('Disguised Image:', disguisedImage);
+        const handleDisguise = (disguisedImage) => { console.log('Disguised Image:', disguisedImage);}
            // You can handle the disguised image as needed }; 
         const handleStartClick = () => { 
           setShowPlayerSelector(true);
-
-
          };
   // This useEffect would simulate game over; you can replace this with your actual logic
   /* useEffect(() => {
@@ -47,7 +47,7 @@ export default function App() {
   const handleSimulateGameEnd = () => {
     setIsGameOver(true); // Set game as over
   }; */
-        };
+        
   return (
     <div className="App">
       <header className="App-header"> <h1>Player Selector and Disguise</h1>
@@ -57,19 +57,9 @@ export default function App() {
         {showPlayerSelector && !showDisguisePlayer && ( <PlayerSelector players={players} onSelection={handleSelection} /> )}
          {showDisguisePlayer && currentPlayer && ( <DisguisePlayer player={currentPlayer} onDisguise={handleDisguise} /> )} 
       </header>
-    {/*   <h1>Hello CodeSandbox</h1>
-      <h2>Start editing to see some magic happen!</h2>
-      <h1>Pac-Man</h1>
-      <div className="pac-man-container">
-        <Pacman key={gameKey} />
-      </div>
-      {isGameOver && <div className="game-over">Game Over! Restarting...</div>}
-      {/* Button to simulate game end for demonstration */}
-      {/* <button onClick={handleSimulateGameEnd}>End Game (Simulate)</button> */} 
     </div>
   );
-}
-
+};
 
 /* function applyGaussianBlur(ctx, width, height) { const imageData = ctx.getImageData(0, 0, width, height); 
   const data = imageData.data; const kernel = [ [1, 4, 7, 4, 1], [4, 16, 26, 16, 4], [7, 26, 41, 26, 7], [4, 16, 26, 16, 4], [1, 4, 7, 4, 1] ];
