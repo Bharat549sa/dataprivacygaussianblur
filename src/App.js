@@ -1,7 +1,11 @@
 import Pacman from "react-pacman";
 import { useEffect, useState } from "react";
 import "./styles.css";
-import PlayerSelector from './PlayerSelector'; import DisguisePlayer from './DisguisePlayer';
+import PlayerSelector from './PlayerSelector';
+import DisguisePlayer from './DisguisePlayer';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import NextPage from './NextPage';
+
 export default function App() {
 /*   const [gameKey, setGameKey] = useState(0); // Unique key to remount the Pacman component
   const [isGameOver, setIsGameOver] = useState(false); // State to track if the game is over
@@ -26,12 +30,11 @@ export default function App() {
           setCurrentPlayer(selectedPlayers[0]);
            setShowDisguisePlayer(true);
         };
-        const handleDisguise = (disguisedImage) => { console.log('Disguised Image:', disguisedImage);
+        const handleDisguise = (disguisedImage) => { 
+          console.log('Disguised Image:', disguisedImage);}
            // You can handle the disguised image as needed }; 
         const handleStartClick = () => { 
           setShowPlayerSelector(true);
-
-
          };
   // This useEffect would simulate game over; you can replace this with your actual logic
   /* useEffect(() => {
@@ -47,29 +50,43 @@ export default function App() {
   const handleSimulateGameEnd = () => {
     setIsGameOver(true); // Set game as over
   }; */
-        };
+ 
   return (
     <div className="App">
       <header className="App-header"> <h1>Player Selector and Disguise</h1>
        {!showPlayerSelector && (
          <button onClick={handleStartClick}>
         Start</button> )} 
+
+      
         {showPlayerSelector && !showDisguisePlayer && ( <PlayerSelector players={players} onSelection={handleSelection} /> )}
          {showDisguisePlayer && currentPlayer && ( <DisguisePlayer player={currentPlayer} onDisguise={handleDisguise} /> )} 
       </header>
-    {/*   <h1>Hello CodeSandbox</h1>
-      <h2>Start editing to see some magic happen!</h2>
-      <h1>Pac-Man</h1>
-      <div className="pac-man-container">
-        <Pacman key={gameKey} />
-      </div>
-      {isGameOver && <div className="game-over">Game Over! Restarting...</div>}
-      {/* Button to simulate game end for demonstration */}
-      {/* <button onClick={handleSimulateGameEnd}>End Game (Simulate)</button> */} 
+      <AgentSelector />
+      {showPlayerSelector && !showDisguisePlayer && ( <PlayerSelector players={players} onSelection={handleSelection} /> )}
+     {/*  <body> <div> <img src="agent1.jpg" class="agent-image" onclick="selectAgent('Agent 1')"> 
+      <img src="agent2.jpg" class="agent-image" onclick="selectAgent('Agent 2')"> 
+      </div> <div class="popup" id="agentPopup"> <p id="agentMessage"></p> <button onclick="closePopup()">Close</button> </div>
+       <div> <input type="password" id="passwordInput" placeholder="Enter password"> <button onclick="checkPassword()">Submit</button>
+       
+        </div> <div class="popup" id="passwordPopup"> <p id="passwordMessage"></p> <button onclick="closePopup()">Close</button> </div> <script>
+          
+           function selectAgent(agent) { document.getElementById('agentMessage').innerText = `Do you want to select ${agent} as your agent?`;
+            document.getElementById('agentPopup').style.display = 'block'; } function closePopup() { document.getElementById('agentPopup').style.display = 'none';
+               document.getElementById('passwordPopup').style.display = 'none'; } function checkPassword() { const originalPassword = 'yourOriginalPassword'; const enteredPassword = document.getElementById('passwordInput').value; if (enteredPassword === originalPassword) { document.getElementById('passwordMessage').innerText = 'Password is correct!'; } else { document.getElementById('passwordMessage').innerText = 'Password is incorrect!'; } document.getElementById('passwordPopup').style.display = 'block'; }
+       </script>
+       </body> */}
+
+  { /* <Router> <div className="App">
+     <Switch>
+       <Route exact path="/" component={Home} />
+   <Route path="/NextPage" component={NextPage} /> 
+
+   </Switch>
+    </div> </Router>  */}
     </div>
   );
-}
-
+};
 
 /* function applyGaussianBlur(ctx, width, height) { const imageData = ctx.getImageData(0, 0, width, height); 
   const data = imageData.data; const kernel = [ [1, 4, 7, 4, 1], [4, 16, 26, 16, 4], [7, 26, 41, 26, 7], [4, 16, 26, 16, 4], [1, 4, 7, 4, 1] ];

@@ -17,3 +17,88 @@
       float: 'left';
       margin-right: '20px';
   }
+
+  /* styles.css */
+body {
+  font-family: Arial, sans-serif;
+}
+
+.App-header {
+  text-align: center;
+  margin-top: 20px;
+}
+
+canvas {
+  border: 1px solid #ccc;
+  margin-top: 20px;
+}
+
+button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+label {
+  display: block;
+  margin: 10px 0;
+}
+
+p {
+  margin: 10px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+/* styles.css */
+.container {
+  text-align: center;
+}
+
+.image {
+  width: 200px;
+  height: 200px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.input-container {
+  margin-top: 20px;
+}
+
+button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.crack {
+  background-color: red;
+  color: white;
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+.agent-image { width: 100px; height: 100px; cursor: pointer; }
+ .popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px; background-color: white; border: 1px solid #ccc; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+  .popup.show { display: block; }
