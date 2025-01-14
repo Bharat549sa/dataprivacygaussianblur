@@ -1,10 +1,23 @@
 // DisguisePlayer.js
 import React, { useRef, useState } from 'react';
-
+import './styles.css';
+import PlayerSelector from './PlayerSelector';
 const DisguisePlayer = ({ player, onDisguise }) => {
   const canvasRef = useRef(null);
+  const disguisedImageCanvasRef = useRef(null);
   const [disguiseType, setDisguiseType] = useState('');
+  const [showMoreInfo, setShowMoreInfo] = useState(false);
+  const [savedPassword, setSavedPassword] = useState('');
+  const [showMainContainer, setShowMainContainer] = useState(true);
 
+  const players = [ 
+    { name: 'Player 1', src: 'images/personel/1.jpg'},
+    { name: 'Player 2', src: 'images/personel/1 (2).jpg' },
+    { name: 'Player 3', src: 'images/personel/2 (2).jpg' },
+    { name: 'Player 4', src: 'images/personel/3.jpg' }, 
+    { name: 'Player 5', src: 'images/personel/4.jpg' }, 
+    { name: 'Player 6', src: 'images/personel/4 (2).jpg' } 
+  ];
   const applyDisguise = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
@@ -80,54 +93,108 @@ const DisguisePlayer = ({ player, onDisguise }) => {
     setDisguiseType(event.target.value);
   };
 
-  const handleSubmit = () => {
-    onDisguise(canvasRef.current.toDataURL());
+  const handleMoreInfoToggle = () => { setShowMoreInfo(!showMoreInfo); };
+  const handleCrackPassword = () => {
+    const userInput = prompt('Enter something to crack the password:');
+    if (userInput) {
+      setSavedPassword(userInput);
+      alert('Password saved for later.');
+    }
+  };
+  const handleSubmit = () => { 
+    const disguisedImageCanvas = disguisedImageCanvasRef.current;
+    const disguisedImageContext = disguisedImageCanvas.getContext('2d');
+    const img = new Image();
+    img.src = player.src;
+    disguisedImageCanvas.width = img.width;
+    disguisedImageCanvas.height = img.height;
+    disguisedImageContext.drawImage(canvasRef.current, 0, 0);
+    setShowMainContainer(false);
+    // const disguisedImage = canvasRef.current.toDataURL();
+    // onDisguise(disguisedImage); 
+    
+    // window.open(disguisedImage, '_blank'); 
   };
 
+  // handleSelection = () => {
+
+  // }
+
   return (
-    <div>
-      <h2>Disguise Player</h2>
-      <canvas ref={canvasRef}></canvas>
-      <div>
-        <label>
-          <input
-            type="radio"
-            value="blur"
-            checked={disguiseType === 'blur'}
-            onChange={handleDisguiseChange}
-          />
-          Blur Face
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="gaussianblur"
-            checked={disguiseType === 'gaussianblur'}
-            onChange={handleDisguiseChange}
-          />
-          Gaussian Blur Face
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="scribble"
-            checked={disguiseType === 'scribble'}
-            onChange={handleDisguiseChange}
-          />
-          Scribble
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="fullColor"
-            checked={disguiseType === 'fullColor'}
-            onChange={handleDisguiseChange}
-          />
-          Full Color Modification
-        </label>
+    <div className="container">
+      <div style={{ display: showMainContainer ? 'block' : 'none' }}>
+        <h2>Disguise Player</h2>
+        <canvas ref={canvasRef} className="image"></canvas>
+        <div className="input-container">
+          <label>
+            <input
+              type="radio"
+              value="blur"
+              checked={disguiseType === 'blur'}
+              onChange={handleDisguiseChange}
+            />
+            Blur Face
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="gaussianblur"
+              checked={disguiseType === 'gaussianblur'}
+              onChange={handleDisguiseChange}
+            />
+            Gaussian Blur Face
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="scribble"
+              checked={disguiseType === 'scribble'}
+              onChange={handleDisguiseChange}
+            />
+            Scribble
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="fullColor"
+              checked={disguiseType === 'fullColor'}
+              onChange={handleDisguiseChange}
+            />
+            Full Color Modification
+          </label>
+        </div>
+        <button onClick={applyDisguise}>Apply Disguise</button>
+        <button onClick={handleSubmit}>Submit</button>
+        <button className="crack" onClick={handleCrackPassword}>Crack Password</button>
+      
+          <button onClick={handleMoreInfoToggle}>More Info</button>
+          {showMoreInfo && (
+            <div>
+              {disguiseType === 'blur' && <p>Gaussian Blur: This filter applies a blur effect to the entire image, making it less recognizable.</p>}
+              {disguiseType === 'scribble' && <p>Scribble: This option adds random scribbles over the image to obscure the details.</p>}
+              {disguiseType === 'fullColor' && <p>Full Color Modification: This option changes the color of the entire image, making it look completely different.</p>}
+            </div>
+          )}
       </div>
-      <button onClick={applyDisguise}>Apply Disguise</button>
-      <button onClick={handleSubmit}>Submit</button>
+      <div style={{ display: showMainContainer ? 'none' : 'block' }}>
+        <div>Choose wisely! You can only try to undo 1 effect</div>
+        <div>
+          <canvas ref={disguisedImageCanvasRef} className="image" id="disguisedImageCanvas" ></canvas>
+          <div style={{display: "flex", justifyContent: "center"}}>
+            {players.map((player, idx) => {
+              return (<div index={idx} style={{ display: "flex", }}>
+                  <img src={player.src} width="100px" height="100px" style={{cursor: "pointer"}} />
+                </div>
+              )})}
+          </div>
+          <div>
+            <input placeholder='Enter Password Here'/>
+            <button >Submit</button>
+            <button>Crack Password</button>
+            {/* <PlayerSelector players={players} onSelection={handleSelection}/> */}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

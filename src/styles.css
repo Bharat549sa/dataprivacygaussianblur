@@ -17,3 +17,37 @@
       float: 'left';
       margin-right: '20px';
   }
+
+  /* styles.css */
+body {
+  font-family: Arial, sans-serif;
+}
+
+.App-header {
+  text-align: center;
+  margin-top: 20px;
+}
+
+canvas {
+  border: 1px solid #ccc;
+  margin-top: 20px;
+}
+
+button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+label {
+  display: block;
+  margin: 10px 0;
+}
+
+p {
+  margin: 10px 0;
+  font-size: 14px;
+  color: #555;
+}
+
