@@ -2,6 +2,8 @@
 import React, { useRef, useState } from 'react';
 import './styles.css';
 import PlayerSelector from './PlayerSelector';
+import EncryptionModal from './EncryptionModal';
+
 const DisguisePlayer = ({ player, onDisguise }) => {
   const canvasRef = useRef(null);
   const disguisedImageCanvasRef = useRef(null);
@@ -9,6 +11,14 @@ const DisguisePlayer = ({ player, onDisguise }) => {
   const [showMoreInfo, setShowMoreInfo] = useState(false);
   const [savedPassword, setSavedPassword] = useState('');
   const [showMainContainer, setShowMainContainer] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
+  const [showPlayerSelector, setShowPlayerSelector] = useState(false);
+  const [showAgentPopup, setShowAgentPopup] = useState(false);
+  const [agentMessage, setAgentMessage] = useState('');
+  const [showPasswordPopup, setShowPasswordPopup] = useState(false);
+  const [passwordMessage, setPasswordMessage] = useState('');
+  const [showEncryptionModal, setShowEncryptionModal] = useState(false);
 
   const players = [ 
     { name: 'Player 1', src: 'images/personel/1.jpg'},
@@ -18,7 +28,9 @@ const DisguisePlayer = ({ player, onDisguise }) => {
     { name: 'Player 5', src: 'images/personel/4.jpg' }, 
     { name: 'Player 6', src: 'images/personel/4 (2).jpg' } 
   ];
+
   const applyDisguise = () => {
+    setShowEncryptionModal(true);
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     const img = new Image();
@@ -119,9 +131,44 @@ const DisguisePlayer = ({ player, onDisguise }) => {
   // handleSelection = () => {
 
   // }
+  const handleEncryptModal = () => {
+    setShowEncryptionModal(true);
+    console.log(showEncryptionModal);
+  }
 
+  const handleImageClick = (agent) => {
+    setPopupMessage(`Do you want to select ${agent} as an agent?`);
+    setShowPopup(true);
+  };
+  
+  const handlePasswordCheck = () => {
+    const userInput = prompt('Enter the password:');
+    if (userInput === savedPassword) {
+      setPopupMessage('Correct password!');
+    } else {
+      setPopupMessage('Incorrect password!');
+    }
+    setShowPopup(true);
+  };
+  
+  const closePopup = () => {
+    setShowPopup(false);
+  };
+  const handleSelection = (selectedPlayer) => {
+    console.log(`Selected player: ${selectedPlayer.name}`);
+    // You can add more logic here, such as:
+    setPopupMessage(`You selected ${selectedPlayer.name}`);
+    setShowPopup(true);
+    setShowPlayerSelector(false);
+  };
+  const selectAgent = (agent) => {
+    setAgentMessage(`Do you want to select ${agent} as your agent?`);
+    setShowAgentPopup(true);
+  };
+  
   return (
     <div className="container">
+      {showEncryptionModal && <EncryptionModal /> }
       <div style={{ display: showMainContainer ? 'block' : 'none' }}>
         <h2>Disguise Player</h2>
         <canvas ref={canvasRef} className="image"></canvas>
@@ -163,7 +210,7 @@ const DisguisePlayer = ({ player, onDisguise }) => {
             Full Color Modification
           </label>
         </div>
-        <button onClick={applyDisguise}>Apply Disguise</button>
+        <button onClick={() => applyDisguise()}>Apply Disguise</button>
         <button onClick={handleSubmit}>Submit</button>
         <button className="crack" onClick={handleCrackPassword}>Crack Password</button>
       
@@ -181,19 +228,67 @@ const DisguisePlayer = ({ player, onDisguise }) => {
         <div>
           <canvas ref={disguisedImageCanvasRef} className="image" id="disguisedImageCanvas" ></canvas>
           <div style={{display: "flex", justifyContent: "center"}}>
+      {players.map((player, idx) => (
+        <div key={idx} style={{ display: "flex" }}>
+          <img 
+            src={player.src} 
+            width="100px" 
+            height="100px" 
+            style={{cursor: "pointer"}} 
+            onClick={() => handleImageClick(player.name)}
+          />
+        </div>
+      ))}
+    </div>
+         
+        {/*   <div style={{display: "flex", justifyContent: "center"}}>
             {players.map((player, idx) => {
               return (<div index={idx} style={{ display: "flex", }}>
                   <img src={player.src} width="100px" height="100px" style={{cursor: "pointer"}} />
                 </div>
               )})}
-          </div>
+          </div> */}
           <div>
             <input placeholder='Enter Password Here'/>
-            <button >Submit</button>
+
+            <button onClick={handlePasswordCheck}>Submit</button>
+      <button onClick={() => setShowPasswordPopup(true)}>Crack Password</button>
+      <PlayerSelector 
+        players={players} 
+        onSelection={handleSelection}
+        show={showPlayerSelector}
+        onClose={() => setShowPlayerSelector(false)}
+      />
+    </div>
+
+    {showPopup && (
+      <div className="popup">
+        <p>{popupMessage}</p>
+        <button onClick={closePopup}>Close</button>
+      </div>
+    )}
+
+    {showAgentPopup && (
+      <div className="popup">
+        <p>{agentMessage}</p>
+        <button onClick={() => setShowAgentPopup(false)}>Yes</button>
+        <button onClick={() => setShowAgentPopup(false)}>No</button>
+      </div>
+    )}
+
+    {showPasswordPopup && (
+      <div className="popup">
+        <p>{passwordMessage}</p>
+        <button onClick={() => setShowPasswordPopup(false)}>Close</button>
+      </div>
+    )}
+  </div>
+
+{/*             <button >Submit</button>
             <button>Crack Password</button>
-            {/* <PlayerSelector players={players} onSelection={handleSelection}/> */}
+             <PlayerSelector players={players} onSelection={handleSelection}/> 
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -1,0 +1,39 @@
+.modal-container {
+  position: absolute;
+  z-index: 100;
+  display: block;
+  top: 0;
+  left: 0;
+  background-color: white;
+}
+
+.modal-header {
+  color: white;
+  background-color: gray;
+  font-size: 60px;
+  padding: 30px; 
+}
+
+.modal-body {
+  padding: 40px;
+  font-size: 35px;
+}
+
+.button-group {
+  margin-top: 40px;
+}
+
+.modal-button {
+  background-color: #457823;
+  border: 2px black;
+  color: white;
+  font-size: 30px;
+  width: 160px;
+}
+
+.modal-footer {
+  color: white;
+  background-color: gray;
+  font-size: 20px;
+  padding: 30px;
+}
